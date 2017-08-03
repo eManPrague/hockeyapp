@@ -81,7 +81,15 @@ module HockeyApp
     def invite_user app, options={}
       ws.invite_user app.public_identifier, options
     end
-    
+
+    def update_user(app, user, options = {})
+      ws.update_user app.public_identifier, user.id, options
+    end
+
+    def remove_user(app, user)
+      ws.remove_user app.public_identifier, user.id
+    end
+
     def new_app title, bundle_id, options = {}
       resp = ws.create_new_app(title, bundle_id, options)
       raise resp['errors'].map{|e|e.to_s}.join("\n") unless resp['errors'].nil?

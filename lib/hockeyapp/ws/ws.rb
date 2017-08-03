@@ -77,7 +77,6 @@ module HockeyApp
       self.class.post "/apps/#{app_id}/app_versions/upload", :body => params
     end
 
-
     def remove_app app_id
       self.class.format :plain
       response = self.class.delete "/apps/#{app_id}"
@@ -114,7 +113,16 @@ module HockeyApp
       self.class.post "/apps/#{app_id}/app_users", :body => params
     end
 
-   def create_new_app title, bundle_id, options = {}
+    def update_user(app_id, user_id, options = {})
+      params = options.slice(:email, :first_name, :last_name, :message, :role, :tags)
+      self.class.put "/apps/#{app_id}/app_users/#{user_id}", body: params
+    end
+
+    def remove_user(app_id, user_id)
+      self.class.delete "/apps/#{app_id}/app_users/#{user_id}"
+    end
+
+    def create_new_app title, bundle_id, options = {}
       unless options[:icon].nil?
         icon_path = options[:icon]
         accepted_formats = [".png", ".gif", ".jpeg"]
@@ -124,6 +132,5 @@ module HockeyApp
       options.merge!(:title => title, :bundle_identifier => bundle_id)
       self.class.post "/apps/new", :body => options
     end
-
   end
 end
