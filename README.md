@@ -1,9 +1,8 @@
-HockeyApp gem
-=============
+# HockeyApp gem
 
-This gem enables you to easily access the JSON Rest API of http://www.hockeyapp.net.
+This gem enables you to easily access the JSON Rest API of [http://www.hockeyapp.net](http://www.hockeyapp.net).
 
-More info available on this API here : http://support.hockeyapp.net/kb/api
+More info available on this API here : [http://support.hockeyapp.net/kb/api](http://support.hockeyapp.net/kb/api)
 
 
 HOW-TO

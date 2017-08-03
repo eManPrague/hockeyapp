@@ -7,7 +7,6 @@ module HockeyApp
     headers 'Accept' => 'application/json'
     format :json
 
-
     def initialize (options = {})
       @options = Config.to_h.merge(options)
       raise "No API Token Given" if (@options[:token].nil?)
@@ -15,11 +14,9 @@ module HockeyApp
       self.class.base_uri @options[:base_uri] if @options[:base_uri].present?
     end
 
-
     def get_apps
       self.class.get '/apps'
     end
-
 
     def get_crashes app_id, options = {}
       self.class.get "/apps/#{app_id}/crashes", options
@@ -103,7 +100,21 @@ module HockeyApp
       self.class.post "/apps", :body => params
     end
 
-    def create_new_app title, bundle_id, options = {}
+    def remove_versions app, options
+      params = options.select { |key, value| [:strategy, :number, :keep, :storage].include? key }
+      self.class.post "/apps/#{app.public_identifier}/app_versions/delete", :body => params
+    end
+
+    def list_users app_id, options={}
+      self.class.get "/apps/#{app_id}/app_users", options
+    end
+
+    def invite_user app_id, options={}
+      params = options.slice(:email, :first_name, :last_name, :message, :role, :tags)
+      self.class.post "/apps/#{app_id}/app_users", :body => params
+    end
+
+   def create_new_app title, bundle_id, options = {}
       unless options[:icon].nil?
         icon_path = options[:icon]
         accepted_formats = [".png", ".gif", ".jpeg"]
@@ -113,6 +124,6 @@ module HockeyApp
       options.merge!(:title => title, :bundle_identifier => bundle_id)
       self.class.post "/apps/new", :body => options
     end
-    
+
   end
 end
